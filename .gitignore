@@ -217,5 +217,12 @@ pip-log.txt
 .gradle/
 build.gradle
 resources/
-src/com/techshroom/crystalix/*
-!src/com/techshroom/crystalix/api/*
+!/src
+/src/*
+!/src/com
+/src/com/*
+!/src/com/techshroom
+/src/com/techshroom/*
+!/src/com/techshroom/crystalix
+/src/com/techshroom/crystalix/*
+!/src/com/techshroom/crystalix/api
