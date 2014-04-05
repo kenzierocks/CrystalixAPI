@@ -217,6 +217,8 @@ pip-log.txt
 .gradle/
 build.gradle
 resources/
+
+# excluding main mod
 !/src
 /src/*
 !/src/com
@@ -225,4 +227,7 @@ resources/
 /src/com/techshroom/*
 !/src/com/techshroom/crystalix
 /src/com/techshroom/crystalix/*
+# end exclude
+# include specific resources
 !/src/com/techshroom/crystalix/api
+# end includes
