@@ -119,6 +119,10 @@ public final class Wires {
         }
         return nodes;
     }
+    
+    public static int getOutputCount(IBlockSource i) {
+        return lookForEnds(i).length;
+    }
 
     /**
      * Adds the give location to the node map for tracing, Must be called by
@@ -167,7 +171,7 @@ public final class Wires {
      * Single arg version of {@link #conv(IBlockSource...)}.
      * 
      * @param one
-     * @return the given {@link IBlockSource} to convert tot a
+     * @return the given {@link IBlockSource} to convert to a
      *         {@link GraphBlockSource}.
      */
     private static GraphBlockSource convOne(IBlockSource one) {
