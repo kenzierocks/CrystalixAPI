@@ -1,5 +1,7 @@
 package com.techshroom.crystalix.api.power;
 
+import net.minecraft.dispenser.IBlockSource;
+
 /**
  * Represents an object that can receive power.
  * 
@@ -16,4 +18,13 @@ public interface IPowerReceiver {
      *         back to the provider.
      */
     public CrystalonGluke receiveRequestedPower(CrystalonGluke power);
+
+    /**
+     * Snooty receivers can choose where they get their power from.
+     * 
+     * @param i
+     *            - the power source
+     * @return if it wants this power
+     */
+    public boolean wantsPowerFrom(IBlockSource i);
 }
