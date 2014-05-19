@@ -18,6 +18,7 @@ public class PowerRequestEvent extends PowerEvent {
 
     public void setPower(CrystalonGluke cg) {
         if (cg == null) {
+            setPower(CrystalonGluke.of(0));
             return;
         }
         returnedPower = cg;

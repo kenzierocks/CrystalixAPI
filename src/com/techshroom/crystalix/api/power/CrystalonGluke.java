@@ -7,7 +7,8 @@ import java.io.Serializable;
  * 
  * @author kenzietogami
  */
-public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable {
+public final class CrystalonGluke implements Comparable<CrystalonGluke>,
+        Serializable {
     private static final long serialVersionUID = 9178043987510557792L;
     /**
      * Singleton for no crystalon. Use instead of null.
@@ -15,9 +16,8 @@ public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable 
     public static final CrystalonGluke NONE = new CrystalonGluke(0);
 
     /**
-     * See {@link Crystalon#gluke(int)}.
+     * Creates a gluke of power.
      * 
-     * @see Crystalon#gluke(int)
      */
     public static CrystalonGluke of(int value) {
         if (value == 0) {
@@ -25,6 +25,13 @@ public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable 
             return NONE;
         }
         return new CrystalonGluke(value);
+    }
+
+    /**
+     * Clone into a new instance
+     */
+    public static CrystalonGluke clone(CrystalonGluke cg) {
+        return of(cg.getValue());
     }
 
     /**
@@ -47,8 +54,8 @@ public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable 
      * 
      * @param value
      */
-    public void addValue(int value) {
-        stored += value;
+    public CrystalonGluke addValue(int value) {
+        return of(stored + value);
     }
 
     /**
@@ -57,8 +64,8 @@ public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable 
      * @param value
      *            - the value to set this gluke to.
      */
-    public void setValue(int value) {
-        stored = value;
+    public CrystalonGluke setValue(int value) {
+        return of(value);
     }
 
     /**
@@ -71,21 +78,26 @@ public class CrystalonGluke implements Comparable<CrystalonGluke>, Serializable 
     }
 
     /**
-     * Splits this CG into two pieces, one of the amount given and this one with
-     * the leftover amount. Like decrStackSize for inventories.
+     * Splits this CG into two pieces, one of the amount given and one with the
+     * leftover amount. Like decrStackSize for inventories.
+     * 
+     * NB: this CG will have the wanted amount. If you use 0 as the amount;
+     * nothing will happen to keep {@link #NONE} as the singularity.
      * 
      * @param amount
-     *            - the amount to store into the new CG
-     * @return a new CG of the given amount, or less if there is not as much as
-     *         the given amount.
+     *            - the amount to subtract from this gluke
+     * @return a new CG of the leftovers
      */
     public CrystalonGluke split(int amount) {
+        if(amount == 0) {
+            return NONE;
+        }
         if (stored < amount) {
-            setValue(0);
-            return CrystalonGluke.of(stored);
+            return CrystalonGluke.of(0);
         } else {
-            setValue(stored - amount);
-            return CrystalonGluke.of(amount);
+            CrystalonGluke ret = CrystalonGluke.of(stored - amount);
+            stored = amount;
+            return ret;
         }
     }
 

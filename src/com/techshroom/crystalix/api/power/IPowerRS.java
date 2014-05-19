@@ -7,12 +7,4 @@ package com.techshroom.crystalix.api.power;
  *
  */
 public interface IPowerRS extends IPowerReceiver, IPowerStorer {
-
-    /**
-     * Gets the amount of power space in this {@link IPowerStorer} and
-     * {@link IPowerReceiver}.
-     * 
-     * @return the max amount of crystalons this storage can have added to it
-     */
-    public int getPowerSpace();
 }

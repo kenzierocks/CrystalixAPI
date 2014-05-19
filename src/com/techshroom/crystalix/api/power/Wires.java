@@ -34,6 +34,19 @@ public final class Wires {
      *         null if none found.
      */
     public static IBlockSource wireTraceToProvider(IBlockSource i) {
+        return wireTraceToProviders(i)[0];
+    }
+
+    /**
+     * Traces from the given block to providers and returns the locations of
+     * provider or null if there is none.
+     * 
+     * @param i
+     *            - start location
+     * @return a {@link IBlockSource}[] for the {@link IPowerProvider}s found,
+     *         or null if none found.
+     */
+    public static IBlockSource[] wireTraceToProviders(IBlockSource i) {
         sync(i);
         Graph master = getGraph(i);
         master.compact();
@@ -44,20 +57,19 @@ public final class Wires {
         GraphNode[] possibleEnds = lookForEnds(i);
         GraphSearch_Dijkstra d = new GraphSearch_Dijkstra(master);
         LinkedList<GraphNode> list = null;
-        LinkedList<IBlockSource> conv = null;
+        Map<GraphNode, LinkedList<IBlockSource>> conv = new HashMap<GraphNode, LinkedList<IBlockSource>>();
         for (GraphNode end : possibleEnds) {
-            start.id();
             list = d.search(start.id(), end.id(), true);
             if (list != null && !list.isEmpty()) {
-                conv = convertToIBS(list, i);
-                IBlockSource check = conv.getLast();
+                conv.put(end, convertToIBS(list, i));
+                IBlockSource check = conv.get(end).getLast();
                 if (IBS.equal(i, check)) {
                     // don't move power from start -> start
                     continue;
                 }
                 IPowerProvider ipp = IBS.provider(check);
                 if (ipp != null && ipp.hasPower()) {
-                    break;
+                    // break;
                 } else if (ipp != null) {
 
                 }
@@ -67,12 +79,14 @@ public final class Wires {
             // no path found
             return null;
         }
-        IBlockSource check = conv.getLast();
-        if (IBS.equal(i, check)) {
-            // don't move power from start -> start
-            return null;
+        List<IBlockSource> listing = new ArrayList<IBlockSource>();
+        for (LinkedList<IBlockSource> l : conv.values()) {
+            if (IBS.equal(i, l.getLast())) {
+                // don't move power from start -> start
+                continue;
+            }listing.add(l.getLast());
         }
-        return check;
+        return listing.toArray(new IBlockSource[0]);
     }
 
     private static Graph getGraph(IBlockSource i) {
@@ -119,7 +133,7 @@ public final class Wires {
         }
         return nodes;
     }
-    
+
     public static int getOutputCount(IBlockSource i) {
         return lookForEnds(i).length;
     }
