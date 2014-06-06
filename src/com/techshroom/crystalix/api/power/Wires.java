@@ -84,7 +84,8 @@ public final class Wires {
             if (IBS.equal(i, l.getLast())) {
                 // don't move power from start -> start
                 continue;
-            }listing.add(l.getLast());
+            }
+            listing.add(l.getLast());
         }
         return listing.toArray(new IBlockSource[0]);
     }
@@ -150,6 +151,11 @@ public final class Wires {
         sync(add);
         Graph master = getGraph(add);
         if (hasNodeAt(add)) {
+            GraphNode x = getNodeAt(add);
+            if (x instanceof GraphBlockSource) {
+                buildEdgesTo((GraphBlockSource) x);
+                save(add);
+            }
             return;
         }
         GraphBlockSource gbs = convOne(add);
@@ -173,10 +179,12 @@ public final class Wires {
         IBS.unsetOverride();
         for (IBlockSource n : nearby) {
             GraphBlockSource node = (GraphBlockSource) getNodeAt(n);
-            if (node != null) {
-                master.addEdge(node.id(), gbs.id(),
-                        CrystalixWire.levelFromMeta(node.getBlockMetadata()),
-                        CrystalixWire.levelFromMeta(gbs.getBlockMetadata()));
+            if (node != null
+                    && !(master.hasEdge(node.id(), gbs.id()) && master.hasEdge(
+                            gbs.id(), node.id()))) {
+                master.addEdge(node.id(), gbs.id(), 4 - CrystalixWire
+                        .levelFromMeta(node.getBlockMetadata()),
+                        4 - CrystalixWire.levelFromMeta(gbs.getBlockMetadata()));
             }
         }
     }
