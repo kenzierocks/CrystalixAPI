@@ -1,9 +1,10 @@
 package com.techshroom.crystalix.api.power;
 
+import net.minecraft.block.Block;
 import net.minecraft.dispenser.IBlockSource;
+import net.minecraft.tileentity.TileEntity;
 
-import com.techshroom.crystalix.power.PowerBus;
-import com.techshroom.crystalix.power.PowerRequestHandler;
+import com.techshroom.crystalix.power.*;
 
 public final class PowerUtil {
     private PowerUtil() {
@@ -61,6 +62,38 @@ public final class PowerUtil {
 
         public static boolean isPowerProviderReceiverAndStorer(Object o) {
             return o instanceof IPowerPRS;
+        }
+        
+
+
+        public static IPowerProvider provider(IBlockSource ibs) {
+            if (ibs == null) {
+                return null;
+            }
+            Block b = ibs.getWorld().getBlock(ibs.getXInt(), ibs.getYInt(), ibs.getZInt());
+            if (PowerInterfaceHelper.isPowerProvider(b)) {
+                return (IPowerProvider) b;
+            }
+            TileEntity te = ibs.getBlockTileEntity();
+            if (PowerInterfaceHelper.isPowerProvider(te)) {
+                return (IPowerProvider) te;
+            }
+            return null;
+        }
+
+        public static IPowerReceiver receiver(IBlockSource ibs) {
+            if (ibs == null) {
+                return null;
+            }
+            Block b = ibs.getWorld().getBlock(ibs.getXInt(), ibs.getYInt(), ibs.getZInt());
+            if (PowerInterfaceHelper.isPowerReceiver(b)) {
+                return (IPowerReceiver) b;
+            }
+            TileEntity te = ibs.getBlockTileEntity();
+            if (PowerInterfaceHelper.isPowerReceiver(te)) {
+                return (IPowerReceiver) te;
+            }
+            return null;
         }
     }
 

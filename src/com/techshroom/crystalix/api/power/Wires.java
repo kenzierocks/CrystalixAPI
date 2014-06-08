@@ -9,8 +9,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants.NBT;
 import pathfinder.*;
 
-import com.techshroom.crystalix.*;
-import com.techshroom.crystalix.Util.*;
+import com.parentelprojecthelp.Util.IBS;
+import com.techshroom.crystalix.CrystalixMain;
+import com.techshroom.crystalix.api.power.PowerUtil.PowerInterfaceHelper;
 import com.techshroom.crystalix.block.CrystalixWire;
 import com.techshroom.crystalix.pathsearch.GraphBlockSource;
 import com.techshroom.crystalix.world.nbt.CrystalixCustomNBT;
@@ -67,7 +68,7 @@ public final class Wires {
                     // don't move power from start -> start
                     continue;
                 }
-                IPowerProvider ipp = IBS.provider(check);
+                IPowerProvider ipp = PowerInterfaceHelper.provider(check);
                 if (ipp != null && ipp.hasPower()) {
                     // break;
                 } else if (ipp != null) {
@@ -121,7 +122,7 @@ public final class Wires {
         List<IBlockSource> res = new ArrayList<IBlockSource>();
         for (GraphNode test : all) {
             if (test instanceof GraphBlockSource
-                    && IBS.provider((GraphBlockSource) test) != null) {
+                    && PowerInterfaceHelper.provider((GraphBlockSource) test) != null) {
                 res.add((GraphBlockSource) test);
             }
         }
