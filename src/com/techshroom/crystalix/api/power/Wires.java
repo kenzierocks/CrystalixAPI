@@ -76,7 +76,7 @@ public final class Wires {
                 }
             }
         }
-        if (conv == null || conv.isEmpty()) {
+        if (conv.isEmpty()) {
             // no path found
             return null;
         }

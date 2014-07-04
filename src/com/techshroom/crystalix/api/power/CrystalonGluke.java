@@ -64,6 +64,7 @@ public final class CrystalonGluke implements Comparable<CrystalonGluke>,
      * @param value
      *            - the value to set this gluke to.
      */
+    @SuppressWarnings("static-method")
     public CrystalonGluke setValue(int value) {
         return of(value);
     }
@@ -89,16 +90,16 @@ public final class CrystalonGluke implements Comparable<CrystalonGluke>,
      * @return a new CG of the leftovers
      */
     public CrystalonGluke split(int amount) {
-        if(amount == 0) {
+        if (amount == 0) {
             return NONE;
         }
         if (stored < amount) {
             return CrystalonGluke.of(0);
-        } else {
-            CrystalonGluke ret = CrystalonGluke.of(stored - amount);
-            stored = amount;
-            return ret;
         }
+
+        CrystalonGluke ret = CrystalonGluke.of(stored - amount);
+        stored = amount;
+        return ret;
     }
 
     @Override
